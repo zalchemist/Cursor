@@ -1,0 +1,34 @@
+{
+  "version": "1.2",
+  "updated": "2026-04-01",
+  "note": "Deployment tokens removed — use ABACUS_DEPLOYMENT_TOKEN_* env vars",
+  "chatbots": [
+    {
+      "id": "github-workspace-assistant",
+      "name": "GitHub Workspace Assistant",
+      "description": "Knowledge Brain za Biznisoft MySQL bazu i Git operacije",
+      "topics": ["biznisoft", "mysql", "sql", "git", "database"],
+      "deployment_id_env": "ABACUS_DEPLOYMENT_ID_GH_ASSISTANT",
+      "deployment_token_env": "ABACUS_DEPLOYMENT_TOKEN_GH_ASSISTANT",
+      "has_knowledge_base": false,
+      "has_deep_agent_protocol": true,
+      "protocol_tags": ["[DEEP_AGENT_QUERY]", "[DEEP_AGENT_REPORT]", "[DEEP_AGENT_UPDATE]"],
+      "tools": ["Git_Tool"],
+      "status": "active"
+    },
+    {
+      "id": "abacus-knowledge-brain",
+      "name": "Abacus Knowledge Brain",
+      "description": "Ekspert za Abacus.AI platformu, API, chatbotove, Document Retrievere",
+      "topics": ["abacus", "api", "chatbot", "document-retriever", "feature-group", "deployment"],
+      "deployment_id_env": "ABACUS_DEPLOYMENT_ID_KNOWLEDGE_BRAIN",
+      "deployment_token_env": "ABACUS_DEPLOYMENT_TOKEN_KNOWLEDGE_BRAIN",
+      "document_retriever_id_env": "ABACUS_DOC_RETRIEVER_ID_KNOWLEDGE_BRAIN",
+      "has_knowledge_base": true,
+      "has_deep_agent_protocol": true,
+      "protocol_tags": ["[DEEP_AGENT_QUERY]", "[DEEP_AGENT_REPORT]", "[DEEP_AGENT_UPDATE]"],
+      "tools": [],
+      "status": "active"
+    }
+  ]
+}
