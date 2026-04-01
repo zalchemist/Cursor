@@ -1,0 +1,35 @@
+{
+  "version": "1.1.0",
+  "updated": "2026-04-01",
+  "source": "https://github.com/zalchemist/abacus-skill-creator",
+  "skills": [
+    {
+      "name": "biznisoft-db-analyst-v1",
+      "version": "v1",
+      "description": "Autonomna analiza BizniSoft ERP MySQL/MariaDB baza podataka — import dump-ova, razumevanje multi-tenant arhitekture (opp + oppXXXYYYY), analiza integriteta, poslovne logike, storno obrazaca i dokumentovanje nalaza. Aktivira se kada korisnik traži analizu BizniSoft baze, import SQL dump-a, proveru integriteta.",
+      "location": "abacus-skill-creator/skills/biznisoft-db-analyst-v1",
+      "dependencies": []
+    },
+    {
+      "name": "deep-agent-chatbot-protocol",
+      "version": "v1",
+      "description": "DeepAgent protokol za strukturiranu komunikaciju sa Abacus AI chatbotovima — definicija tagova [DEEP_AGENT_QUERY], [DEEP_AGENT_REPORT], [DEEP_AGENT_UPDATE] i pravila za sesijsku komunikaciju.",
+      "location": "abacus-skill-creator/skills/deep-agent-chatbot-protocol",
+      "dependencies": []
+    },
+    {
+      "name": "excel-serbian-standard-v3",
+      "version": "v3",
+      "description": "Ovaj skill se aktivira kada korisnik želi da kreira, čita, edituje ili analizira Excel fajlove (.xlsx, .xls, .csv) sa srpskim/evropskim formatiranjem. Pokriva: kreiranje spreadsheet-ova, analizu podataka, pivot tabele, grafikone, formule, conditional formatting, data validation i multi-sheet workbook-e.",
+      "location": "abacus-skill-creator/skills/excel-serbian-standard-v3",
+      "dependencies": []
+    },
+    {
+      "name": "komunikacija-sa-korisnikom",
+      "version": "v1",
+      "description": "Ovaj skill definiše kako agent treba da komunicira sa korisnikom koji ima specifične zahteve: želi da vidi originalne podatke, želi primer pre izvršenja svakog koraka, želi da agent pita pre nego što pretpostavi, koristi srpski jezik, latinicu, ekavicu.",
+      "location": "abacus-skill-creator/skills/komunikacija-sa-korisnikom",
+      "dependencies": []
+    }
+  ]
+}
