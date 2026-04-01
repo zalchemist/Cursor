@@ -1,0 +1,93 @@
+name: Make Repositories Private
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Repository name to make private (e.g. MyRepo). Leave empty to make ALL public repositories private.'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (list repos that would be changed, but do not change them)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+jobs:
+  make-private:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Make repositories private
+        env:
+          GH_TOKEN: ${{ secrets.REPO_VISIBILITY_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          TARGET_REPO: ${{ inputs.repository }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          FAILED=0
+
+          make_private() {
+            local repo="$1"
+            if ! gh api --method PATCH "repos/$OWNER/$repo" \
+                  -f private=true \
+                  --jq '"Set \(.full_name) to private."'; then
+              echo "ERROR: Failed to set $OWNER/$repo to private." >&2
+              FAILED=$((FAILED + 1))
+            fi
+          }
+
+          if [ -n "$TARGET_REPO" ]; then
+            # Single repository mode
+            echo "Target repository: $OWNER/$TARGET_REPO"
+
+            VISIBILITY=$(gh api "repos/$OWNER/$TARGET_REPO" --jq '.visibility')
+            echo "Current visibility: $VISIBILITY"
+
+            if [ "$VISIBILITY" = "public" ]; then
+              if [ "$DRY_RUN" = "true" ]; then
+                echo "[DRY RUN] Would set $OWNER/$TARGET_REPO to private."
+              else
+                make_private "$TARGET_REPO"
+              fi
+            else
+              echo "$OWNER/$TARGET_REPO is already private or internal. No change needed."
+            fi
+          else
+            # All public repositories mode — works for both personal accounts and organisations
+            echo "Fetching all public repositories for $OWNER ..."
+            PUBLIC_REPOS=$(gh api "user/repos?visibility=public&per_page=100" --paginate --jq '.[].name')
+
+            if [ -z "$PUBLIC_REPOS" ]; then
+              echo "No public repositories found."
+              exit 0
+            fi
+
+            echo "Public repositories found:"
+            echo "$PUBLIC_REPOS"
+
+            if [ "$DRY_RUN" = "true" ]; then
+              echo ""
+              echo "[DRY RUN] The following repositories would be set to private:"
+              echo "$PUBLIC_REPOS"
+            else
+              echo ""
+              echo "Setting all public repositories to private..."
+              while IFS= read -r repo; do
+                make_private "$repo"
+              done <<< "$PUBLIC_REPOS"
+              echo "Done."
+            fi
+          fi
+
+          if [ "$FAILED" -gt 0 ]; then
+            echo "$FAILED repository/repositories could not be updated. See errors above."
+            exit 1
+          fi
